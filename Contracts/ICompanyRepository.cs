@@ -1,5 +1,4 @@
 ﻿using Entities.Models;
-using LanguageExt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,9 @@ namespace Contracts
     public interface ICompanyRepository
     {
         IEnumerable<Company> GetAllCompanies(bool trackChanges);
-        Option<Company> GetCompany(Guid companyId, bool trackChanges);
+        Company GetCompany(Guid companyId, bool trackChanges);
+
+        void CreateCompany(Company company);
 
     }
 }

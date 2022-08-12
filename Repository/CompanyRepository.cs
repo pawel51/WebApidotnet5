@@ -1,7 +1,6 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
-using LanguageExt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +20,13 @@ namespace Repository
                 .OrderBy(c => c.Name)
                 .ToList();
 
-        public Option<Company> GetCompany(Guid companyId, bool trackChanges) =>
+        public Company GetCompany(Guid companyId, bool trackChanges) =>
             FindByCondition(c => c.Id.Equals(companyId), trackChanges)
             .SingleOrDefault();
 
+        void ICompanyRepository.CreateCompany(Company company)
+        {
+            Create(company);
+        }
     }
 }

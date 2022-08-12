@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.DTO
+namespace Entities.DTO.InDto
 {
-    public class CompanyDto
+    public class AddCompanyDto
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
-        public string FullAddress { get; set; }
+        public string Address { get; set; }
+        public string Country { get; set; }
     }
 }
