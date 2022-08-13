@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 
 namespace WebApidotnet5.Formatters
 {
+    /// <summary>
+    /// Formatuje standardową odpowiedź http jeżeli
+    /// typ zwracanych danych to CompanyDto lub IEnumerableDto.
+    /// Jeżeli klient wymaga formatu text/csv zmieni format odpowiedzi
+    /// </summary>
     public class CsvOutPutFormatter : TextOutputFormatter
     {
         public CsvOutPutFormatter()

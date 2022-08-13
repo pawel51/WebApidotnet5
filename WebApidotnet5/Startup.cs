@@ -38,13 +38,20 @@ namespace WebApidotnet5
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
             services.AddAutoMapper(typeof(Startup));
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
             services.AddControllers(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
             })
+                .AddNewtonsoftJson()
                 .AddXmlDataContractSerializerFormatters()
-                .AddCustomCSVFormatter();
+                .AddCustomCSVFormatter()
+                ;
+
 
         }
 

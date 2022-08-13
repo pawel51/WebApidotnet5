@@ -1,0 +1,61 @@
+﻿PATCH OPERATION REQUEST BODY EXPLANATION
+
+Add
+{
+"op": "add",
+"path": "/name",
+"value": "new value"
+}
+Assigns a new value to a required
+property.
+
+
+Remove
+{
+"op": "remove",
+"path": "/name"
+}
+Sets a default value to a required
+property.
+
+
+Replace
+{
+"op": "replace",
+"path": "/name",
+"value": "new value"
+}
+Replaces a value of a required
+property to a new value.
+
+
+Copy
+{
+"op": "copy",
+"from": "/name",
+"path": "/title"
+}
+Copies the value from a property in
+the “from” part to the property in
+the “path” part.
+
+
+Move
+{
+"op": "move",
+"from": "/name",
+"path": "/title"
+}
+Moves the value from a property in
+the “from” part to a property in
+the “path” part.
+
+
+Test
+{
+"op": "test",
+"path": "/name",
+"value": "new value"
+}
+Tests if a property has a specified
+value.

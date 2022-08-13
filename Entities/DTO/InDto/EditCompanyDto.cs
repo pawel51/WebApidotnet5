@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Entities.DTO.InDto
 {
-    public class AddCompanyDto
+    public class EditCompanyDto
     {
         public string Name { get; set; }
         public string Address { get; set; }
         public string Country { get; set; }
-
         public IEnumerable<AddEmployeeDto> Employees { get; set; }
     }
 }
