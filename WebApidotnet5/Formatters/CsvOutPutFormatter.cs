@@ -1,5 +1,4 @@
-﻿using Entities.DTO;
-using Entities.DTO.OutDto;
+﻿using Entities.DTO.OutDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;

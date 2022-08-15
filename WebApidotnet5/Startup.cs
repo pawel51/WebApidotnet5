@@ -1,21 +1,20 @@
 using Contracts;
+using Entities.DTO.OutDto;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using NLog;
-using System;
-using System.Collections.Generic;
+using Repository.DataShaping;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using WebApidotnet5.ActionFilters;
 using WebApidotnet5.Extensions;
+using WebApidotnet5.Filters;
 using WebApidotnet5.ServiceExtensions;
+using WebApidotnet5.Utility;
 
 namespace WebApidotnet5
 {
@@ -42,16 +41,25 @@ namespace WebApidotnet5
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+            services.AddScoped<ActionFilterExample>();
+            services.AddScoped<ControllerFilterExample>();
+            services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ValidateCompanyExistsAttribute>();
+            services.AddScoped<ValidateEmployeeForCompanyExistsAttribute>();
+            services.AddScoped<ValidateMediaTypeAttribute>();
+            services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
+            services.AddScoped<EmployeeLinks>();
             services.AddControllers(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
+                config.Filters.Add(new GlobalFilterExample());
             })
                 .AddNewtonsoftJson()
                 .AddXmlDataContractSerializerFormatters()
                 .AddCustomCSVFormatter()
                 ;
-
+            services.AddCustomMediaTypes();
 
         }
 

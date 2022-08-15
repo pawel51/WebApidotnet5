@@ -1,10 +1,11 @@
 ﻿using Contracts;
 using Entities;
 using Entities.Models;
+using Entities.RequestFeatures;
+using Microsoft.EntityFrameworkCore;
+using Repository.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Repository
@@ -26,16 +27,23 @@ namespace Repository
             Delete(employee);
         }
 
-        public Employee GetEmployee(Guid companyId, Guid id, bool trackChanges)
+        public async Task<Employee> GetEmployeeAsync(Guid companyId, Guid id, bool trackChanges)
         {
-            return FindByCondition(e => e.CompanyId.Equals(companyId) && e.Id.Equals(id), trackChanges)
-                .SingleOrDefault();
+            return await FindByCondition(e => e.CompanyId.Equals(companyId) && e.Id.Equals(id), trackChanges)
+                .SingleOrDefaultAsync();
         }
 
-        public IEnumerable<Employee> GetEmployees(Guid companyId, bool trackChanges)
+        public async Task<PagedList<Employee>> GetEmployeesAsync(Guid companyId, EmployeeParameters empParams, bool trackChanges)
         {
-            return FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges)
-                .OrderBy(e => e.Name);
+            IQueryable<Employee> query = FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges);
+
+            var employeesList = await query
+                    .FilterEmployees(empParams.MinAge, empParams.MaxAge)
+                    .Search(empParams.SearchTerm)
+                    .Sort(empParams.OrderBy)
+                    .ToListAsync();
+
+            return PagedList<Employee>.ToPagedList(employeesList, empParams.PageNumber, empParams.PageSize);
         }
     }
 }
