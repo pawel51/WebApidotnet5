@@ -36,6 +36,7 @@ namespace WebApidotnet5.Controllers
         }
 
         [HttpGet]
+        [HttpHead]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetEmployeesForCompany(Guid companyId, [FromQuery] EmployeeParameters employeeParameters)
         {
@@ -52,10 +53,10 @@ namespace WebApidotnet5.Controllers
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(employeesFromDb.MetaData));
             var employeesDto = _mapper.Map<IEnumerable<EmployeeDto>>(employeesFromDb);
 
-            var links = _employeeLinks.TryGenerateLinks(employeesDto, employeeParameters.Fields, companyId, HttpContext);
-            return links.HasLinks ? Ok(links.LinkedEntities) : Ok(links.ShapedEntities);
+            //var links = _employeeLinks.TryGenerateLinks(employeesDto, employeeParameters.Fields, companyId, HttpContext);
+            //return links.HasLinks ? Ok(links.LinkedEntities) : Ok(links.ShapedEntities);
 
-            //return Ok(_dataShaper.ShapeData(employeesDto, employeeParameters.Fields));
+            return Ok(_dataShaper.ShapeData(employeesDto, employeeParameters.Fields));
         }
 
         [HttpGet("{id}", Name = "GetEmployeeForCompany")]

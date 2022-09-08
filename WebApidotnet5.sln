@@ -3,15 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApidotnet5", "WebApidotnet5\WebApidotnet5.csproj", "{05B234DC-14AA-472D-8764-6A7D717CD02C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApidotnet5", "WebApidotnet5\WebApidotnet5.csproj", "{05B234DC-14AA-472D-8764-6A7D717CD02C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{0E42B06F-7089-40D1-8399-AFF958195A36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{0E42B06F-7089-40D1-8399-AFF958195A36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{D7ABEE44-9DAA-4454-B24F-D8D891613860}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{D7ABEE44-9DAA-4454-B24F-D8D891613860}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{D79040C2-E939-4A89-A9D0-47DC2F9C7DD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{D79040C2-E939-4A89-A9D0-47DC2F9C7DD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{D6A0A0D1-8479-4AA8-B24D-3AB0A4EDBA59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{D6A0A0D1-8479-4AA8-B24D-3AB0A4EDBA59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{F3B0B325-54D0-45BB-93D5-513DB7026F05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{42630BAB-262B-468A-B49C-1FED2FA03CEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Contracts", "Service.Contracts\Service.Contracts.csproj", "{5366A18C-4527-478F-9010-0A2F14549778}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,18 @@ Global
 		{D6A0A0D1-8479-4AA8-B24D-3AB0A4EDBA59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6A0A0D1-8479-4AA8-B24D-3AB0A4EDBA59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6A0A0D1-8479-4AA8-B24D-3AB0A4EDBA59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3B0B325-54D0-45BB-93D5-513DB7026F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3B0B325-54D0-45BB-93D5-513DB7026F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3B0B325-54D0-45BB-93D5-513DB7026F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3B0B325-54D0-45BB-93D5-513DB7026F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42630BAB-262B-468A-B49C-1FED2FA03CEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42630BAB-262B-468A-B49C-1FED2FA03CEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42630BAB-262B-468A-B49C-1FED2FA03CEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42630BAB-262B-468A-B49C-1FED2FA03CEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5366A18C-4527-478F-9010-0A2F14549778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5366A18C-4527-478F-9010-0A2F14549778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5366A18C-4527-478F-9010-0A2F14549778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5366A18C-4527-478F-9010-0A2F14549778}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

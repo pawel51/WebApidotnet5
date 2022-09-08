@@ -3,6 +3,7 @@ using Contracts;
 using Entities.DTO.InDto;
 using Entities.DTO.OutDto;
 using Entities.Models;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,6 +15,7 @@ using WebApidotnet5.ModelBinders;
 
 namespace WebApidotnet5.Controllers
 {
+    [ApiVersion("1.0")]
     [Route("api/companies")]
     [ApiController]
     public class CompaniesController : ControllerBase
@@ -33,7 +35,7 @@ namespace WebApidotnet5.Controllers
             _logger.LogInfo("Info msg");
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {
             var companies = await _repository.Company.GetAllCompaniesAsync(trackChanges: false);
@@ -43,6 +45,9 @@ namespace WebApidotnet5.Controllers
         }
 
         [HttpGet("{id}", Name = "CompanyById")]
+        //[ResponseCache(CacheProfileName = "120SecondDuration")]
+        [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 5)]
+        [HttpCacheValidation(MustRevalidate = true)]
         public async Task<IActionResult> GetCompany(Guid id)
         {
             var company = await _repository.Company.GetCompanyAsync(id, trackChanges: false);
@@ -59,7 +64,7 @@ namespace WebApidotnet5.Controllers
         }
 
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        [HttpPost]
+        [HttpPost(Name = "CreateCompany")]
         public async Task<IActionResult> CreateCompany([FromBody] AddCompanyDto company)
         {
             var companyEntity = _mapper.Map<Company>(company);
@@ -126,6 +131,13 @@ namespace WebApidotnet5.Controllers
             _mapper.Map(company, companyEntity);
             await _repository.SaveAsync();
             return NoContent();
+        }
+
+        [HttpOptions]
+        public IActionResult GetCompaniesOptions()
+        {
+            Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+            return Ok();
         }
     }
 }
