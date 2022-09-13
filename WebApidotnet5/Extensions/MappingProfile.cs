@@ -18,6 +18,7 @@ namespace WebApidotnet5.Extensions
             CreateMap<AddEmployeeDto, Employee>();
             CreateMap<EditEmployeeDto, Employee>().ReverseMap();
             CreateMap<EditCompanyDto, Company>();
+            CreateMap<UserForRegistrationDto, User>();
 
         }
     }

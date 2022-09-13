@@ -72,7 +72,6 @@ namespace WebApidotnet5.Controllers
             await _repository.SaveAsync();
             var companyToReturn = _mapper.Map<CompanyDto>(companyEntity);
             return CreatedAtRoute("CompanyById", new { id = companyToReturn.Id }, companyToReturn);
-
         }
 
         [HttpGet("collection/({ids})", Name = "CompanyCollection")]

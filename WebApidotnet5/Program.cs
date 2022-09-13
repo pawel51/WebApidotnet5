@@ -17,8 +17,5 @@ namespace WebApidotnet5
                     webBuilder.UseStartup<Startup>();
                 });
 
-
-        
-
     }
 }

@@ -32,42 +32,18 @@ namespace WebApidotnet5
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // CORS Policy
             services.ConfigureCors();
-            services.AddAutoMapper(typeof(Startup));
-
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });
-            
-            services.AddScoped<ActionFilterExample>();
-            services.AddScoped<ControllerFilterExample>();
-            services.AddScoped<ValidationFilterAttribute>();
-            services.AddScoped<ValidateCompanyExistsAttribute>();
-            services.AddScoped<ValidateEmployeeForCompanyExistsAttribute>();
-            services.AddScoped<ValidateMediaTypeAttribute>();
-            services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
-            services.AddScoped<EmployeeLinks>();
-            
-            
-            services.AddHttpCacheHeaders();
-            services.AddMemoryCache();
-            
-            services.AddHttpContextAccessor();
-            services.AddAuthentication();
-            
-
-            // <-- Extensions -->
-            // ******************
             // Integration with IIS
             services.ConfigureIISIntegration();
             // Logging
             services.ConfigureLoggerService();
             // Connection string & migrations
             services.ConfigureSqlContext(Configuration);
+            // Auto mapping nuget
+            services.AddAutoMapper(typeof(Startup));
             // Trash Manager 
             services.ConfigureRepositoryManager();
-
             // Controller config (filters, caches, accept header)
             services.AddControllers(config =>
             {
@@ -80,24 +56,38 @@ namespace WebApidotnet5
                 .AddXmlDataContractSerializerFormatters()
                 .AddCustomCSVFormatter()
                 ;
-
             // HateToAs 
             services.AddCustomMediaTypes();
-
             // Versioning
             services.ConfigureVersioning();
-
             // Caching
             // Response caching
+            services.AddHttpCacheHeaders();
             services.ConfigureResponseCaching();
             // Response expiration time and validation
             services.ConfigureHttpCacheHeaders();
-
             // Rate Limiting (Throttling)
+            services.AddMemoryCache();
             services.ConfigureRateLimitingOptions();
+            services.AddHttpContextAccessor();
 
             // Identification
+            services.AddAuthentication();
             services.ConfigureIdentity();
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
+            services.AddScoped<ActionFilterExample>();
+            services.AddScoped<ControllerFilterExample>();
+            services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ValidateCompanyExistsAttribute>();
+            services.AddScoped<ValidateEmployeeForCompanyExistsAttribute>();
+            services.AddScoped<ValidateMediaTypeAttribute>();
+            services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
+            services.AddScoped<EmployeeLinks>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -122,8 +112,10 @@ namespace WebApidotnet5
             });
 
             app.UseResponseCaching();
+            app.UseIpRateLimiting();
             app.UseRouting();
             app.UseHttpCacheHeaders();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -131,7 +123,7 @@ namespace WebApidotnet5
                 endpoints.MapControllers();
             });
 
-            app.UseIpRateLimiting();
+            
         }
 
     }

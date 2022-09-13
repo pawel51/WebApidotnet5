@@ -102,12 +102,12 @@ namespace WebApidotnet5.ServiceExtensions
         {
             var rateLimitRules = new List<RateLimitRule>
              {
-             new RateLimitRule
-             {
-             Endpoint = "*",
-             Limit= 3,
-             Period = "5m"
-             }
+                 new RateLimitRule
+                 {
+                 Endpoint = "*",
+                 Limit= 3,
+                 Period = "5m"
+                 }
              };
             services.Configure<IpRateLimitOptions>(opt =>
             {
@@ -116,6 +116,7 @@ namespace WebApidotnet5.ServiceExtensions
             services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
             services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
             services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCoreRateLimit" Version="4.0.2" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.6.5" />
   </ItemGroup>
 
