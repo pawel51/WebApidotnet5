@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Repository.Extensions;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Repository
@@ -37,6 +38,7 @@ namespace Repository
         {
             IQueryable<Employee> query = FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges);
 
+            
             var employeesList = await query
                     .FilterEmployees(empParams.MinAge, empParams.MaxAge)
                     .Search(empParams.SearchTerm)

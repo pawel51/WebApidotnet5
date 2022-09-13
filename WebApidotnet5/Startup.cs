@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Contracts;
 using Entities.DTO.OutDto;
 using Microsoft.AspNetCore.Builder;
@@ -32,18 +33,13 @@ namespace WebApidotnet5
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureCors();
-            services.ConfigureIISIntegration();
-            services.ConfigureLoggerService();
-            services.ConfigureSqlContext(Configuration);
-            services.ConfigureRepositoryManager();
-            services.ConfigureVersioning();
-            services.ConfigureResponseCaching();
             services.AddAutoMapper(typeof(Startup));
+
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
-            services.ConfigureHttpCacheHeaders();
+            
             services.AddScoped<ActionFilterExample>();
             services.AddScoped<ControllerFilterExample>();
             services.AddScoped<ValidationFilterAttribute>();
@@ -52,19 +48,56 @@ namespace WebApidotnet5
             services.AddScoped<ValidateMediaTypeAttribute>();
             services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
             services.AddScoped<EmployeeLinks>();
+            
+            
+            services.AddHttpCacheHeaders();
+            services.AddMemoryCache();
+            
+            services.AddHttpContextAccessor();
+            services.AddAuthentication();
+            
+
+            // <-- Extensions -->
+            // ******************
+            // Integration with IIS
+            services.ConfigureIISIntegration();
+            // Logging
+            services.ConfigureLoggerService();
+            // Connection string & migrations
+            services.ConfigureSqlContext(Configuration);
+            // Trash Manager 
+            services.ConfigureRepositoryManager();
+
+            // Controller config (filters, caches, accept header)
             services.AddControllers(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
                 config.Filters.Add(new GlobalFilterExample());
                 config.CacheProfiles.Add("120SecondDuration", new CacheProfile { Duration = 120 });
-            })
+            })  // MvcBuidler
                 .AddNewtonsoftJson()
                 .AddXmlDataContractSerializerFormatters()
                 .AddCustomCSVFormatter()
                 ;
+
+            // HateToAs 
             services.AddCustomMediaTypes();
-            services.AddHttpCacheHeaders();
+
+            // Versioning
+            services.ConfigureVersioning();
+
+            // Caching
+            // Response caching
+            services.ConfigureResponseCaching();
+            // Response expiration time and validation
+            services.ConfigureHttpCacheHeaders();
+
+            // Rate Limiting (Throttling)
+            services.ConfigureRateLimitingOptions();
+
+            // Identification
+            services.ConfigureIdentity();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,6 +130,8 @@ namespace WebApidotnet5
             {
                 endpoints.MapControllers();
             });
+
+            app.UseIpRateLimiting();
         }
 
     }
