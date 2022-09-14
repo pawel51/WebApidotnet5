@@ -3,8 +3,10 @@ using Entities.DTO.InDto;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -17,8 +19,7 @@ namespace Repository
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
         private User _user;
-        public AuthenticationManager(UserManager<User> userManager, IConfiguration
-       configuration)
+        public AuthenticationManager(UserManager<User> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
@@ -38,11 +39,12 @@ namespace Repository
         }
         private SigningCredentials GetSigningCredentials()
         {
-            var key =
-           Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"));
+            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"));
             var secret = new SymmetricSecurityKey(key);
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
+
+        // Creates claims with username and all roles
         private async Task<List<Claim>> GetClaims()
         {
             var claims = new List<Claim>
@@ -64,10 +66,10 @@ namespace Repository
             issuer: jwtSettings.GetSection("validIssuer").Value,
             audience: jwtSettings.GetSection("validAudience").Value,
             claims: claims,
-            expires:
-           DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings.GetSection("expires").Value)),
+            expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings.GetSection("expires").Value)),
             signingCredentials: signingCredentials
             );
-            return tokenOpti
-           }
+            return tokenOptions;
+        }
     }
+}

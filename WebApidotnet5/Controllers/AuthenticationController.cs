@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using WebApidotnet5.ActionFilters;
 
 namespace WebApidotnet5.Controllers
@@ -18,7 +19,8 @@ namespace WebApidotnet5.Controllers
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        public AuthenticationController(ILoggerManager logger, IMapper mapper, UserManager<User> userManager)
+        private readonly IAuthenticationManager _authManager;
+        public AuthenticationController(ILoggerManager logger, IMapper mapper, UserManager<User> userManager, IAuthenticationManager authManager)
         {
             _logger = logger;
             _mapper = mapper;
@@ -30,7 +32,8 @@ namespace WebApidotnet5.Controllers
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistrationDto)
         {
             var user = _mapper.Map<User>(userForRegistrationDto);
-            var result = await _userManager.CreateAsync(user);
+            //TODO wymyslic skad brac password
+            var result = await _userManager.CreateAsync(user, userForRegistrationDto.Password);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -65,5 +68,19 @@ namespace WebApidotnet5.Controllers
             
             return StatusCode(201);
         }
+
+        [HttpPost("login")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
+        {
+            if (!await _authManager.ValidateUser(user))
+            {
+                _logger.LogWarn($"{nameof(Authenticate)}: Authentication failed. Wrong user name or password.");
+                return Unauthorized();
+            }
+            return Ok(new { Token = await _authManager.CreateToken() });
+        }
+
+
     }
 }
