@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
+using Repository;
 using Repository.DataShaping;
 using System.IO;
 using WebApidotnet5.ActionFilters;
@@ -75,6 +76,10 @@ namespace WebApidotnet5
             services.AddAuthentication();
             services.ConfigureIdentity();
 
+            // JWT
+            services.ConfigureJWT(Configuration);
+
+            // Supressing  validation model
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
@@ -88,6 +93,7 @@ namespace WebApidotnet5
             services.AddScoped<ValidateMediaTypeAttribute>();
             services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
             services.AddScoped<EmployeeLinks>();
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -123,7 +129,7 @@ namespace WebApidotnet5
                 endpoints.MapControllers();
             });
 
-            
+
         }
 
     }
